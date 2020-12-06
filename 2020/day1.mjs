@@ -1,20 +1,13 @@
 #!/usr/bin/env node
 
-const fs = require('fs/promises');
+import { loadDayLines } from './lib.mjs';
 
 async function day1() {
-    const inputFilePromise = fs.readFile('./input/day1.txt', 'utf8');
-
-    const inputNums = await inputFilePromise
-        .then(fileString => 
-            fileString.split('\n')
-            .map(line => line.trim())
-            .filter(line => line !== '')
-            .map(line => Number(line)));
+    const inputNums = (await loadDayLines(1)).map(line => Number(line));
 
     function twoSum(nums, target) {
         const seenNums = [];
-        for (num of nums) {
+        for (let num of nums) {
             const complement = target - num;
             if (seenNums[complement]) return [num, complement];
             seenNums[num] = true;
