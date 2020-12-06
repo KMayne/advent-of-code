@@ -8,14 +8,11 @@ async function day5() {
     const maxSeatId = presentSeatIds.reduce((maxSeatId, seatId) => Math.max(seatId, maxSeatId), 0);
     console.log(`Max seat ID = ${maxSeatId}`);
     const presentSeatSet = new Set(presentSeatIds);
-    const missingSeats = [];
     for (let i = 0; i <= maxSeatId; i++) {
-        if (!presentSeatSet.has(i)) {
-            missingSeats.push(i);
+        if (!presentSeatSet.has(i) && presentSeatSet.has(i - 1) && presentSeatSet.has(i + 1)) {
+            console.log(`My seat ID = ${i}`);
         }
     }
-    const mySeat = missingSeats.find(seatId => presentSeatSet.has(seatId - 1) && presentSeatSet.has(seatId + 1));
-    console.log(`My seat ID = ${mySeat}`);
 }
 
 function getSeat(seatString) {
