@@ -11,3 +11,13 @@ export function loadDayLines(num) {
         .filter(line => line !== '')
     );
 }
+
+export function twoSum(nums, target) {
+    const seenNums = [];
+    for (let num of nums) {
+        const complement = target - num;
+        if (seenNums[complement]) return [num, complement];
+        seenNums[num] = true;
+    }
+    return [];
+}

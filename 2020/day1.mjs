@@ -1,19 +1,9 @@
 #!/usr/bin/env node
 
-import { loadDayLines } from './lib.mjs';
+import { loadDayLines, twoSum } from './lib.mjs';
 
 async function day1() {
     const inputNums = (await loadDayLines(1)).map(line => Number(line));
-
-    function twoSum(nums, target) {
-        const seenNums = [];
-        for (let num of nums) {
-            const complement = target - num;
-            if (seenNums[complement]) return [num, complement];
-            seenNums[num] = true;
-        }
-        return [];
-    }
 
     function threeSum(nums, target) {
         for (let a of nums) {
