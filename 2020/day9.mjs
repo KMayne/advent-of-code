@@ -4,7 +4,7 @@ import { loadDayLines, twoSum } from './lib.mjs';
 import assert from 'assert/strict';
 
 async function day9() {
-    const inputLines = (await loadDayLines(9)).map(str => Number(str));
+    const inputLines = (await loadDayLines(9)).map(Number);
     const firstViolation = findFirstViolation(inputLines);
     console.log(firstViolation !== undefined ? `Found num violating rule: ${firstViolation}` : 'No violation found');
     const contiguousSum = findContiguousSum(inputLines, firstViolation);

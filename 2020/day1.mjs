@@ -3,7 +3,7 @@
 import { loadDayLines, twoSum } from './lib.mjs';
 
 async function day1() {
-    const inputNums = (await loadDayLines(1)).map(line => Number(line));
+    const inputNums = (await loadDayLines(1)).map(Number);
 
     function threeSum(nums, target) {
         for (let a of nums) {
