@@ -13,9 +13,8 @@ async function day10() {
     }
     const diffs = findDiffCountsBetweenElems([...sortedAdapterJolts, deviceJoltage]);
     console.log(`Diffs of 1 = ${diffs[1]}, diffs of 3 = ${diffs[3]}, 1-diffs * 3-diffs = ${diffs[1] * diffs[3]}`);
-
-    const arrangements = findAllAdapterArrangements(sortedAdapterJolts, deviceJoltage);
-    console.log(`Number of distinct arrangements = ${arrangements.length}`)
+    const arrangements = countAdapterArrangements(sortedAdapterJolts, deviceJoltage);
+    console.log(`Number of distinct arrangements = ${arrangements}`)
 }
 
 function canChainToTarget(sortedAdapterJolts, target) {
@@ -34,24 +33,23 @@ function findDiffCountsBetweenElems(arr) {
   }, []);
 }
 
-function findAllAdapterArrangements(sortedAdapterJolts, target) {
-  const memory = {};
-  function findAllArrangements(currentJoltage, remainingAdapters) {
-    if (memory[currentJoltage] && memory[currentJoltage][remainingAdapters.length]) return memory[currentJoltage][remainingAdapters.length];
-    if (remainingAdapters.length === 1) return [remainingAdapters];
-    const arrangements = takeWhile(remainingAdapters, val => val - currentJoltage <= 3)
-      .((nextAdapter, i) => findAllArrangements(nextAdapter, remainingAdapters.slice(i + 1))
-        .map(arrangement => [nextAdapter, ...arrangement]));
-    if (!memory[currentJoltage]) memory[currentJoltage] = [];
-    memory[currentJoltage][remainingAdapters.length] = arrangements;
-    return arrangements;
+function countAdapterArrangements(sortedAdapterJolts, target) {
+  const countRoutesToTarget = [];
+  const adapters = [0, ...sortedAdapterJolts];
+  for (let i = adapters.length - 1; i >= 0; i--) {
+    const currentAdapter = adapters[i];
+    countRoutesToTarget[currentAdapter] = 0;
+    if (currentAdapter + 3 >= target) {
+      countRoutesToTarget[currentAdapter]++;
+    }
+    for (let next = i + 1; next <= i + 3; next++) {
+      const nextAdapter = adapters[next];
+      if (currentAdapter + 3 >= nextAdapter) {
+        countRoutesToTarget[currentAdapter] += countRoutesToTarget[nextAdapter];
+      }
+    }
   }
-  return findAllArrangements(0, [...sortedAdapterJolts, target].slice(0, 50));
-}
-
-function takeWhile(arr, predicate) {
-  const firstFailIdx = arr.findIndex((v, i, a) => !predicate(v, i, a));
-  return arr.slice(0, firstFailIdx !== -1 ? firstFailIdx : arr.length);
+  return countRoutesToTarget[0];
 }
 
 day10().then(() => {});
